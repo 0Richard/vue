@@ -28,10 +28,19 @@ This project is a Vue.js application template built with Nuxt.js and Vite, utili
 
 This project is a Vue.js application template built with Nuxt.js and Vite, utilizing AWS services for backend functionality. It's set up as a Progressive Web App (PWA) with GraphQL and OpenAPI integration, designed for high performance and offline capabilities.
 
-[Vue Docs](https://vuejs.org/guide/introduction.html)
-[Nuxt](https://nuxt.com/)
-[Vite](https://vite.dev/)
-[pnpm](https://pnpm.io/)
+#### Documentation 
+1. [Vue Docs](https://vuejs.org/guide/introduction.html)
+2. [Nuxt](https://nuxt.com/)
+3. [Vite](https://vite.dev/)
+4. [pnpm](https://pnpm.io/)
+5. [Tailwind CSS](https://tailwindcss.com/)
+6. [Serverless](https://www.serverless.com/)
+
+#### Resources
+1. [Vue PWA Library](https://cli.vuejs.org/core-plugins/pwa.html)
+2. [VSC Vue Plug In ](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+3. [Google PWA Checklist](https://developers.google.com/web/progressive-web-apps/checklist)
+
 
 ## Features
 
@@ -53,6 +62,8 @@ This project is a Vue.js application template built with Nuxt.js and Vite, utili
 - AWS account
 - Serverless.com account
 
+[Go to Table of Contents](#table-of-contents)
+
 ## Installation
 
 ```bash
@@ -69,6 +80,7 @@ cp .env.example .env.local
 # Start the development server
 pnpm run dev
 ```
+[Go to Table of Contents](#table-of-contents)
 
 ## Project Structure
 
