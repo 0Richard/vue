@@ -10,19 +10,18 @@ This project is a Vue.js application template built with Nuxt.js and Vite, utili
 6. [Configuration](#configuration)
 7. [Authentication](#authentication)
 8. [Notification Utility](#notification-utility)
-9. [Data Management](#data-management)
+9. [Data Management GQL/API](#data-management)
 10. [User Interface](#user-interface)
 11. [Streaming and Caching](#streaming-and-caching-capabilities)
 12. [State Management](#state-management)
-13. [API Integration](#api-integration)
-14. [Testing](#testing)
-15. [Deployment](#deployment)
-16. [Offline Capabilities](#offline-capabilities)
-17. [Internationalization](#internationalization)
-18. [Performance Optimization](#performance-optimization)
-19. [Accessibility](#accessibility)
-20. [Contributing](#contributing)
-21. [License](#license)
+13. [Testing](#testing)
+14. [Deployment](#deployment)
+15. [Offline Capabilities](#offline-capabilities)
+16. [Internationalization](#internationalization)
+17. [Performance Optimization](#performance-optimization)
+18. [Accessibility](#accessibility)
+19. [Contributing](#contributing)
+20. [License](#license)
 
 ## Introduction
 
@@ -103,7 +102,7 @@ pnpm run dev
 ├── serverless.yml
 └── package.json
 ```
-
+[Go to Table of Contents](#table-of-contents)
 ## Configuration
 
 ### Environment Variables
@@ -126,7 +125,7 @@ VITE_APP_COGNITO_USER_POOL_ID=your_user_pool_id
 VITE_APP_COGNITO_CLIENT_ID=your_client_id
 VITE_APP_COGNITO_REGION=your_region" > .env.production
 ```
-
+[Go to Table of Contents](#table-of-contents)
 ### AWS Setup
 
 1. Configure AWS CLI with your credentials.
@@ -399,8 +398,8 @@ try {
   console.error('Failed to get current user:', error);
 }
 ```
-
-## Notification Utility
+[Go to Table of Contents](#table-of-contents)
+## Push Notification Utility
 
 This module provides a set of utility functions for managing notifications
 using Amazon Simple Notification Service (SNS). It allows for creating and
@@ -543,10 +542,10 @@ import { subscribeToTopic, publishNotification } from '@/utils/notifications';
 await subscribeToTopic(topicArn, 'email', userEmail);
 await publishNotification(topicArn, 'Welcome to our app!', 'Welcome');
 ```
-
+[Go to Table of Contents](#table-of-contents)
 ## Data Management
 
-Data management is handled through AWS AppSync (GraphQL) and DynamoDB. Here's an example of a GraphQL query:
+### GQL - Data management is handled through AWS AppSync (GraphQL) and DynamoDB. Here's an example of a GraphQL query:
 
 ```javascript
 // src/graphql/queries.js
@@ -564,6 +563,60 @@ export const GET_ITEMS = gql`
   }
 `;
 ```
+[Go to Table of Contents](#table-of-contents)
+
+### API Integration
+
+API calls are made using Axios. Here's an example:
+
+```javascript
+// src/utils/api.js
+
+import axios from 'axios';
+import { getCurrentUser } from './auth'; // Assuming you have an auth utility
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_APP_API_URL
+});
+
+// Add a request interceptor to automatically add the Authorization header
+api.interceptors.request.use(async (config) => {
+  try {
+    const user = await getCurrentUser();
+    const token = user.getSignInUserSession().getIdToken().getJwtToken();
+    config.headers.Authorization = `Bearer ${token}`;
+  } catch (error) {
+    console.error('Error getting auth token', error);
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+export const fetchItems = async () => {
+  const response = await api.get('/items');
+  return response.data;
+};
+
+// Add other API calls as needed
+export const createItem = async (item) => {
+  const response = await api.post('/items', item);
+  return response.data;
+};
+
+export const updateItem = async (id, item) => {
+  const response = await api.put(`/items/${id}`, item);
+  return response.data;
+};
+
+export const deleteItem = async (id) => {
+  const response = await api.delete(`/items/${id}`);
+  return response.data;
+};
+```
+[Go to Table of Contents](#table-of-contents)
+
+
 
 ## Streaming and Caching Capabilities
 
@@ -584,7 +637,7 @@ Our application implements multiple layers of caching:
 
 These strategies ensure optimal performance and user experience, even in low-connectivity situations.
 
-
+[Go to Table of Contents](#table-of-contents)
 ## User Interface
 
 The user interface is built using Vue.js components and Tailwind CSS for styling. Here's an example of a data table component:
@@ -619,7 +672,7 @@ defineProps({
 });
 </script>
 ```
-
+[Go to Table of Contents](#table-of-contents)
 ## State Management
 
 State management is handled using Pinia. Here's an example store:
@@ -696,56 +749,7 @@ export const useItemsStore = defineStore('items', {
   }
 });
 ```
-
-## API Integration
-
-API calls are made using Axios. Here's an example:
-
-```javascript
-// src/utils/api.js
-
-import axios from 'axios';
-import { getCurrentUser } from './auth'; // Assuming you have an auth utility
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_APP_API_URL
-});
-
-// Add a request interceptor to automatically add the Authorization header
-api.interceptors.request.use(async (config) => {
-  try {
-    const user = await getCurrentUser();
-    const token = user.getSignInUserSession().getIdToken().getJwtToken();
-    config.headers.Authorization = `Bearer ${token}`;
-  } catch (error) {
-    console.error('Error getting auth token', error);
-  }
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
-
-export const fetchItems = async () => {
-  const response = await api.get('/items');
-  return response.data;
-};
-
-// Add other API calls as needed
-export const createItem = async (item) => {
-  const response = await api.post('/items', item);
-  return response.data;
-};
-
-export const updateItem = async (id, item) => {
-  const response = await api.put(`/items/${id}`, item);
-  return response.data;
-};
-
-export const deleteItem = async (id) => {
-  const response = await api.delete(`/items/${id}`);
-  return response.data;
-};
-```
+[Go to Table of Contents](#table-of-contents)
 
 ## Testing
 
@@ -768,7 +772,7 @@ describe('DataTable', () => {
   });
 });
 ```
-
+[Go to Table of Contents](#table-of-contents)
 ## Deployment
 
 This project uses Serverless.com for deployment. Configure your `serverless.yml` file and deploy using:
@@ -804,3 +808,5 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+[Go to Table of Contents](#table-of-contents)
